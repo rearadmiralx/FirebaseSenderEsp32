@@ -675,36 +675,38 @@ void streamConfigCallback (MultiPathStreamData streamVal){
 void uploadTemp(){
   tempTemp = tempValue;
   tempValue = TemperatureValue();
-  tempValue == tempTemp ? tempValue : Firebase.RTDB.setFloat(&fbdo, "sensor/temperature/value", tempValue);
-  delay(3000);
+  if(tempValue != tempTemp && tempValue > 1) 
+     Firebase.RTDB.setFloat(&fbdo, "sensor/temperature/value", tempValue);
+  delay(1000);
 }
 
 void uploadHum(){
   tempHum = humidityValue;
   humidityValue = HumidityValue();
-  tempHum == humidityValue ? humidityValue : Firebase.RTDB.setFloat(&fbdo, "sensor/humidity/value", humidityValue);
-  delay(3000);
+  if(humidityValue != tempHum && humidityValue > 1) 
+    tempHum == humidityValue ? humidityValue : Firebase.RTDB.setFloat(&fbdo, "sensor/humidity/value", humidityValue);
+  delay(1000);
 }
 
 void uploadLux(){
   tempLux = luxValue;
   luxValue = LuxValue();
   luxValue == tempLux ? luxValue : Firebase.RTDB.setFloat(&fbdo, "sensor/lux/value", luxValue);
-  delay(3000);
+  delay(1000);
 }
 
 void uploadPpm(){
   tempTds = tdsValue;
   tdsValue = TdsValue2();
   tdsValue == tempTds ? tempTds :Firebase.RTDB.setFloat(&fbdo, "sensor/ppm/value", tdsValue);
-  delay(3000);
+  delay(1000);
 }
 
 void uploadPh(){
   tempPh = phLevelValue;
   phLevelValue = PhValue();
   phLevelValue == tempPh ? tempPh :Firebase.RTDB.setFloat(&fbdo, "sensor/phLevel/value", phLevelValue);
-  delay(3000);
+  delay(1000);
 }
 
 // void temperatureRelayComputation(){
@@ -748,10 +750,10 @@ void uploadPh(){
 void sensorReading(){
   delay(5000);
   uploadTemp();
-  uploadHum();
   uploadLux();
   uploadPh();
   uploadPpm();
+  uploadHum();
 
 }
 

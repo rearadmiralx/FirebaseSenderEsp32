@@ -2,10 +2,12 @@
 
 void setup() {
   Serial.begin(115200);
-
+  Ph_Init();
+  Dht_Init();
+  Lux_Init();
   Wifi_Init();
   Firebase_Init();
-  // Ph_Init();
+  
 }
 
 void loop() {

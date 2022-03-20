@@ -66,7 +66,6 @@ void Dht_Loop(){
 } 
 
 float TemperatureValue(){
-  delay(1500);
   sensors_event_t event;
   dht.temperature().getEvent(&event);
   if (isnan(event.temperature)) {
@@ -82,7 +81,6 @@ float TemperatureValue(){
 }
 
 float HumidityValue(){
-  delay(1500);
   sensors_event_t event;
   dht.humidity().getEvent(&event);
   if (isnan(event.relative_humidity)) {
