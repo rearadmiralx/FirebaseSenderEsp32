@@ -3,8 +3,8 @@
 #include "header.h"
 
 // Your WiFi credentials
-// #define WIFI_SSID "GlobeAtHome_E1DB2"
-// #define WIFI_PASSWORD "passwordnatin"
+// #define WIFI_SSID "GlobeAtHome_76C92"
+// #define WIFI_PASSWORD "AB35RM6L4T1"
 
 // #define WIFI_SSID "Redmitest"
 // #define WIFI_PASSWORD "123456780"
@@ -12,7 +12,7 @@
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 28800;
 const int   daylightOffset_sec = 0;
-
+int wificount = 0;
 // #define WIFI_SSID "Sabihin_mo_please_master"
 // #define WIFI_PASSWORD "iSeeDEADpeople!@#123"
 
@@ -45,6 +45,9 @@ void Wifi_Init() {
     while (WiFi.status() != WL_CONNECTED){
       Serial.print(".");
       delay(300);
+      wificount++;
+      if(wificount > 16)
+        ESP.restart();
     }
 
     Serial.println();

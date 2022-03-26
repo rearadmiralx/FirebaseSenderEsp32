@@ -3,7 +3,7 @@
 #include <DHT_U.h>
 
 
-#define DHTPIN 2  // DHT data pin
+#define DHTPIN 27  // DHT data pin
 #define DHTTYPE DHT22 
 DHT_Unified dht(DHTPIN, DHTTYPE); //For dht sensor
 uint32_t delayMS;
@@ -71,11 +71,11 @@ float TemperatureValue(){
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
   }
-//   else {
-//     // Serial.print(F("Temperature: "));
-//     // Serial.print(event.temperature);
-//     // Serial.println(F("°C"));
-//   }
+  else {
+    Serial.print(F("Temperature: "));
+    Serial.print(event.temperature);
+    Serial.println(F("°C"));
+  }
 
   return event.temperature;
 }

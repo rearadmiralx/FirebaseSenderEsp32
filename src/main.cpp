@@ -2,22 +2,15 @@
 
 void setup() {
   Serial.begin(115200);
+  WaterLevel_Init();
   Ph_Init();
   Dht_Init();
   Lux_Init();
   Wifi_Init();
   Firebase_Init();
-  
 }
 
 void loop() {
+  delay(5000);
   firebaseLoop();
-  // delay(2000);
-  // Lux_Loop();
-  // Serial.println();
-  // // PhValue();
-  // Ph_Loop();
-  // TdsValue2();
-  // waterTemp();
-  // Serial.println(LuxValue());
 }
