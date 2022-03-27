@@ -19,6 +19,8 @@ int wificount = 0;
 #define WIFI_SSID "guest"
 #define WIFI_PASSWORD "EzzySudo,.CHMOD"
 
+// #define WIFI_SSID "POCO M3 Pro 5G"
+// #define WIFI_PASSWORD "andrewlang"
 
 //User sa HarveyBahay "GlobeAtHome_E1DB2"
 //Pass sa Bahay "passwordnatin"

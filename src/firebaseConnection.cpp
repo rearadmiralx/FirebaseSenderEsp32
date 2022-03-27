@@ -9,7 +9,7 @@ FirebaseData fbdo;                                            // Firebase Realti
 FirebaseData stream, streamSensor, streamTimer, streamConfig; // Firebase Realtime Database Object
 FirebaseAuth auth;                                            // Firebase Authentication Object
 FirebaseConfig config;                                        // Firebase configuration Object
-String fuid = "";                                             // Firebase Unique Identifier
+String fuid,Premix = "";                                             // Firebase Unique Identifier
 
 
 bool isAuthenticated = false;
@@ -40,7 +40,7 @@ unsigned long interval = 10000;
 unsigned long restartTimer = 2100000;
 
 unsigned long previousMillis, previousMillis2, minute, second, check = 0;
-int countTimer, countSensor, count, shutdownCount, ConfigCount = 0;
+int countTimer, countSensor, count, shutdownCount, ConfigCount,premixCount  = 0;
 
 // location path
 String pathRelay = "relays";
@@ -366,21 +366,23 @@ void printResultSensor(FirebaseData &data)
 
   String pathLoc3 = data.dataPath().c_str();
 
-  if (pathLoc3.equals("/humidity/value"))
-  {
-    humidityValue = data.floatData();
-  }
-  else if (pathLoc3.equals("/lux/value"))
-  {
-    Serial.println("lux path");
-  }
-  else if (pathLoc3.equals("/phLevel/value"))
+  // if (pathLoc3.equals("/humidity/value"))
+  // {
+  //   humidityValue = data.floatData();
+  // }
+  // else if (pathLoc3.equals("/lux/value"))
+  // {
+  //   Serial.println("lux path");
+  // }
+ if (pathLoc3.equals("/phLevel/value"))
   {
     Serial.println("phLvel path");
 
     if (phLevelValue >= phLevelMinVal && phLevelValue <= phLevelMaxVal)
     {
-      delay(700);
+      Premix = "OFF";
+      Firebase.setString(streamSensor, "/controlConfig/nutriAdded/value", "ON");
+      Serial.println("Done");
     }
     else if (phLevelValue < phLevelMinVal)
     {
@@ -395,70 +397,70 @@ void printResultSensor(FirebaseData &data)
       digitalWrite(pinRelayPhDown, HIGH);
     }
   }
-  else if (pathLoc3.equals("/ppm/value"))
-  {
-    Serial.println("ppm path");
-  }
-  else if (pathLoc3.equals("/temperature/value"))
-  {
-    Serial.println("temperature path");
-  }
-  else if (pathLoc3.equals("/waterTemperature/value"))
-  {
-    Serial.println("waterTemperature path");
-  }
+  // else if (pathLoc3.equals("/ppm/value"))
+  // {
+  //   Serial.println("ppm path");
+  // }
+  // else if (pathLoc3.equals("/temperature/value"))
+  // {
+  //   Serial.println("temperature path");
+  // }
+  // else if (pathLoc3.equals("/waterTemperature/value"))
+  // {
+  //   Serial.println("waterTemperature path");
+  // }
 
-  //   Value Max Checker
-  else if (pathLoc3.equals("/humidity/valueMax"))
-  {
-    Serial.println("humidity max path");
-  }
-  else if (pathLoc3.equals("/lux/valueMax"))
-  {
-    Serial.println("lux max path");
-  }
-  else if (pathLoc3.equals("/phLevel/valueMax"))
-  {
-    Serial.println("phLevel max path");
-  }
-  else if (pathLoc3.equals("/ppm/valueMax"))
-  {
-    Serial.println("ppm max path");
-  }
-  else if (pathLoc3.equals("/temperature/valueMax"))
-  {
-    Serial.println("temperature max path");
-  }
-  else if (pathLoc3.equals("/waterTemperature/valueMax"))
-  {
-    Serial.println("water temperature max path");
-  }
+  // //   Value Max Checker
+  // else if (pathLoc3.equals("/humidity/valueMax"))
+  // {
+  //   Serial.println("humidity max path");
+  // }
+  // else if (pathLoc3.equals("/lux/valueMax"))
+  // {
+  //   Serial.println("lux max path");
+  // }
+  // else if (pathLoc3.equals("/phLevel/valueMax"))
+  // {
+  //   Serial.println("phLevel max path");
+  // }
+  // else if (pathLoc3.equals("/ppm/valueMax"))
+  // {
+  //   Serial.println("ppm max path");
+  // }
+  // else if (pathLoc3.equals("/temperature/valueMax"))
+  // {
+  //   Serial.println("temperature max path");
+  // }
+  // else if (pathLoc3.equals("/waterTemperature/valueMax"))
+  // {
+  //   Serial.println("water temperature max path");
+  // }
 
-  //    Value Min Checker
-  else if (pathLoc3.equals("/humidity/valueMin"))
-  {
-    Serial.println("humidity min path");
-  }
-  else if (pathLoc3.equals("/lux/valueMin"))
-  {
-    Serial.println("lux min path");
-  }
-  else if (pathLoc3.equals("/phLevel/valueMin"))
-  {
-    Serial.println("phLevel min path");
-  }
-  else if (pathLoc3.equals("/ppm/valueMin"))
-  {
-    Serial.println("ppm min path");
-  }
-  else if (pathLoc3.equals("/temperature/valueMin"))
-  {
-    Serial.println("temperature min path");
-  }
-  else if (pathLoc3.equals("/waterTemperature/valueMin"))
-  {
-    Serial.println("water temperature min path");
-  }
+  // //    Value Min Checker
+  // else if (pathLoc3.equals("/humidity/valueMin"))
+  // {
+  //   Serial.println("humidity min path");
+  // }
+  // else if (pathLoc3.equals("/lux/valueMin"))
+  // {
+  //   Serial.println("lux min path");
+  // }
+  // else if (pathLoc3.equals("/phLevel/valueMin"))
+  // {
+  //   Serial.println("phLevel min path");
+  // }
+  // else if (pathLoc3.equals("/ppm/valueMin"))
+  // {
+  //   Serial.println("ppm min path");
+  // }
+  // else if (pathLoc3.equals("/temperature/valueMin"))
+  // {
+  //   Serial.println("temperature min path");
+  // }
+  // else if (pathLoc3.equals("/waterTemperature/valueMin"))
+  // {
+  //   Serial.println("water temperature min path");
+  // }
 
   Serial.println();
   Serial.printf("Received stream payload size: %d (Max. %d)\n\n", data.payloadLength(), data.maxPayloadLength());
@@ -493,7 +495,7 @@ void streamConfigCallback(MultiPathStreamData streamVal4)
         else if (controlConfig[i].equalsIgnoreCase("/preMix/value"))
         {
           streamVal4.value.equalsIgnoreCase("ON") ? Serial.println("ON Premix") : Serial.println("OFF Premix");
-          streamVal4.value.equalsIgnoreCase("ON") ? preMixValue = true : preMixValue = false;
+          streamVal4.value.equalsIgnoreCase("ON") ? Premix = "ON" : Premix = "OFF";
         }
         else if (controlConfig[i].equalsIgnoreCase("/nutriAdded/value"))
         {
@@ -991,12 +993,32 @@ void firebaseLoop()
     previousMillis = currentMillis;
   }
 
-  delay(300);
-  Firebase.readStream(streamConfig);
-  sensorReading();
-  if (dataChanged)
-  {
-    Serial.println("change happen");
-    dataChanged = false;
+  if(Premix == "ON"){
+
+    if(premixCount == 0){
+      Serial.println("Pasok Dito Premix");
+      for (int i = 0; i < 2; i++)
+      {
+        delay(5000);
+      }
+      premixCount++;
+    }
+    else{
+      if(PhValue() >=5.5 && PhValue() <=6){
+        Firebase.setString(fbdo, "/controlConfig/nutriAdded/value", "ON");
+        Premix == "OFF";
+      }
+    }
+  }
+  else{
+    delay(300);
+    // Firebase.readStream(streamConfig);
+    sensorReading();
+    if (dataChanged)
+    {
+      Serial.println("change happen");
+      dataChanged = false;
+    }
+    premixCount == 0;
   }
 }
