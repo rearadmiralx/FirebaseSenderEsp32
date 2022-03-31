@@ -333,8 +333,18 @@ void printConfig(FirebaseData &data) // For Configuration
 
   if (pathLoc2.equals("/preMix"))
   {
-    preMixValue = !preMixValue;
-    preMixValue ? Serial.print("preMix is ON") : Serial.print("preMix is OFF");
+    if (Premix == "ON")
+    {
+      Premix = "OFF";
+      preMixValue = false;
+      Serial.print("preMix is OFF");
+    }
+    else{
+      Premix = "ON";
+      preMixValue = true;
+      Serial.print("preMix is ON");
+      ESP.restart();
+    }
   }
   else if (pathLoc2.equals("/relayControl"))
   {
@@ -366,14 +376,14 @@ void printResultSensor(FirebaseData &data)
 
   String pathLoc3 = data.dataPath().c_str();
 
-  // if (pathLoc3.equals("/humidity/value"))
-  // {
-  //   humidityValue = data.floatData();
-  // }
-  // else if (pathLoc3.equals("/lux/value"))
-  // {
-  //   Serial.println("lux path");
-  // }
+  if (pathLoc3.equals("/humidity/value"))
+  {
+    humidityValue = data.floatData();
+  }
+  else if (pathLoc3.equals("/lux/value"))
+  {
+    Serial.println("lux path");
+  }
  if (pathLoc3.equals("/phLevel/value"))
   {
     Serial.println("phLvel path");
@@ -381,7 +391,6 @@ void printResultSensor(FirebaseData &data)
     if (phLevelValue >= phLevelMinVal && phLevelValue <= phLevelMaxVal)
     {
       Premix = "OFF";
-      Firebase.setString(streamSensor, "/controlConfig/nutriAdded/value", "ON");
       Serial.println("Done");
     }
     else if (phLevelValue < phLevelMinVal)
@@ -883,12 +892,12 @@ void uploadWaterLevel()
 
 void sensorReading()
 {
-  delay(5000);
+  uploadPh();
+  uploadPpm();
+  delay(3000);
   uploadTemp();
   uploadHum();
   uploadLux();
-  uploadPh();
-  uploadPpm();
   uploadWaterTemp();
   uploadWaterLevel();
 }
@@ -992,28 +1001,17 @@ void firebaseLoop()
     ESP.restart();  
     previousMillis = currentMillis;
   }
-
-  if(Premix == "ON"){
-
-    if(premixCount == 0){
-      Serial.println("Pasok Dito Premix");
-      for (int i = 0; i < 2; i++)
-      {
-        delay(5000);
-      }
-      premixCount++;
-    }
-    else{
-      if(PhValue() >=5.5 && PhValue() <=6){
-        Firebase.setString(fbdo, "/controlConfig/nutriAdded/value", "ON");
-        Premix == "OFF";
-      }
-    }
-  }
   else{
     delay(300);
-    // Firebase.readStream(streamConfig);
-    sensorReading();
+    Firebase.readStream(streamConfig);
+    if(Premix == "ON"){
+      uploadPh();
+      delay(3000);
+    }
+    else{
+      sensorReading();
+    }
+    
     if (dataChanged)
     {
       Serial.println("change happen");
