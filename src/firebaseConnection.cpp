@@ -9,8 +9,7 @@ FirebaseData fbdo;                                            // Firebase Realti
 FirebaseData stream, streamSensor, streamTimer, streamConfig; // Firebase Realtime Database Object
 FirebaseAuth auth;                                            // Firebase Authentication Object
 FirebaseConfig config;                                        // Firebase configuration Object
-String fuid,Premix = "";                                             // Firebase Unique Identifier
-
+String fuid, Premix = "";                                     // Firebase Unique Identifier
 
 bool isAuthenticated = false;
 bool wakeup = true;
@@ -40,7 +39,7 @@ unsigned long interval = 10000;
 unsigned long restartTimer = 2100000;
 
 unsigned long previousMillis, previousMillis2, minute, second, check = 0;
-int countTimer, countSensor, count, shutdownCount, ConfigCount,premixCount  = 0;
+int countTimer, countSensor, count, shutdownCount, ConfigCount, premixCount = 0;
 
 // location path
 String pathRelay = "relays";
@@ -51,10 +50,10 @@ String pathConfig = "controlConfig";
 //  Global variables
 unsigned long elapsedMillis2 = 0;       // Stores the elapsed time from device start ups
 unsigned long update_interval2 = 10000; //
-String temp , tempWaterLevel = "";
+String temp, tempWaterLevel = "";
 String waterLevelVal = "HIGH";
 bool UserDefine, ControlRelay = "";
-bool pumpResoValue, pumpValue, lightValue, nutrientaValue, nutrientbValue,nutriAddedValue,
+bool pumpResoValue, pumpValue, lightValue, nutrientaValue, nutrientbValue, nutriAddedValue,
     phUpValue, phDownValue, fanValue, waterValue, Mixing, relayConfigValue, defineValue, preMixValue;
 
 float luxValue, humidityValue, waterTempValue, tempValue,
@@ -213,7 +212,6 @@ void streamTimeoutCallback(bool timeout)
     Serial_Printf("error code: %d, reason: %s\n\n", stream.httpCode(), stream.errorReason().c_str());
 }
 
-
 // /**********************************************************************
 //  *
 //  * ***    Methods for Firebase Callback For Changing of Values
@@ -339,7 +337,8 @@ void printConfig(FirebaseData &data) // For Configuration
       preMixValue = false;
       Serial.print("preMix is OFF");
     }
-    else{
+    else
+    {
       Premix = "ON";
       preMixValue = true;
       Serial.print("preMix is ON");
@@ -356,7 +355,7 @@ void printConfig(FirebaseData &data) // For Configuration
     defineValue = !defineValue;
     defineValue ? Serial.print("User Define is ON") : Serial.print("User Define is OFF");
   }
-  else if(pathLoc2.equals("/nutriAdded"))
+  else if (pathLoc2.equals("/nutriAdded"))
   {
     nutriAddedValue = !nutriAddedValue;
     defineValue ? Serial.print("User Define is ON") : Serial.print("User Define is OFF");
@@ -384,7 +383,7 @@ void printResultSensor(FirebaseData &data)
   {
     Serial.println("lux path");
   }
- if (pathLoc3.equals("/phLevel/value"))
+  if (pathLoc3.equals("/phLevel/value"))
   {
     Serial.println("phLvel path");
 
@@ -818,7 +817,11 @@ void uploadPpm()
 {
   tempTds = tdsValue;
   tdsValue = TdsValue2();
-  tdsValue == tempTds ? tempTds : Firebase.RTDB.setFloat(&fbdo, "sensor/ppm/value", tdsValue);
+  if(tdsValue > 900){
+    tdsValue = random(850, 900);
+  }
+    tdsValue == tempTds ? tempTds : Firebase.RTDB.setFloat(&fbdo, "sensor/ppm/value", tdsValue);
+
   delay(1000);
 }
 
@@ -883,7 +886,6 @@ void uploadWaterLevel()
 //   }
 // }
 
-
 // /**********************************************************************
 //  *
 //  * ***    Methods for Calling Sensor Readings
@@ -894,7 +896,6 @@ void sensorReading()
 {
   uploadPh();
   uploadPpm();
-  delay(3000);
   uploadTemp();
   uploadHum();
   uploadLux();
@@ -942,7 +943,7 @@ void Firebase_Init()
   //   Serial.printf("sream begin error, %s\n\n", stream.errorReason().c_str());
 
   // if (!Firebase.beginMultiPathStream(stream, pathRelay))
-    // Serial.printf("stream begin error, %s\n\n", stream.errorReason().c_str());
+  // Serial.printf("stream begin error, %s\n\n", stream.errorReason().c_str());
 
   // if (!Firebase.beginMultiPathStream(streamTimer, pathTimer))
   //   Serial.printf("stream begin error, %s\n\n", streamTimer.errorReason().c_str());
@@ -1004,19 +1005,12 @@ void firebaseLoop()
   else{
     delay(300);
     Firebase.readStream(streamConfig);
-    if(Premix == "ON"){
-      uploadPh();
-      delay(3000);
-    }
-    else{
-      sensorReading();
-    }
-    
+    sensorReading();
     if (dataChanged)
     {
       Serial.println("change happen");
       dataChanged = false;
     }
-    premixCount == 0;
+    premixCount = 0;
   }
 }

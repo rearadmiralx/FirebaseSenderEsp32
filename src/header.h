@@ -30,7 +30,7 @@ extern void relayTimer(String pathTimeStart, String pathTimeEnd);
 extern void FirebaseCheckWakeUp(float on, float off);
 
 
-#define USER_EMAIL "harvey.pulido.alvarez@gmail.com"
+#define USER_EMAIL "qcurban.iot@gmail.com"
 #define USER_PASSWORD "Password123"
 #define API_KEY "AIzaSyCLrKZG6RqtlHyyPL2ndZG0mcxQxZCOTxs"
 #define DATABASE_URL "aeroponics-iot-8e4f4-default-rtdb.asia-southeast1.firebasedatabase.app" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
