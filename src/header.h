@@ -30,8 +30,14 @@ extern void relayTimer(String pathTimeStart, String pathTimeEnd);
 extern void FirebaseCheckWakeUp(float on, float off);
 
 
-#define USER_EMAIL "qcurban.iot@gmail.com"
-#define USER_PASSWORD "Password123"
-#define API_KEY "AIzaSyCLrKZG6RqtlHyyPL2ndZG0mcxQxZCOTxs"
-#define DATABASE_URL "aeroponics-iot-8e4f4-default-rtdb.asia-southeast1.firebasedatabase.app" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
-#define FIREBASE_HOST "aeroponics-iot-8e4f4.firebaseio.com"
+// #define USER_EMAIL "qcurban.iot@gmail.com"
+// #define USER_PASSWORD "Password123"
+// #define API_KEY "AIzaSyCLrKZG6RqtlHyyPL2ndZG0mcxQxZCOTxs"
+// #define DATABASE_URL "aeroponics-iot-8e4f4-default-rtdb.asia-southeast1.firebasedatabase.app" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
+// #define FIREBASE_HOST "aeroponics-iot-8e4f4.firebaseio.com"
+
+
+#define USER_EMAIL "qc.urbantech@gmail.com"
+#define USER_PASSWORD "QCU.Aeroponics123#"
+#define API_KEY "AIzaSyBR1Ktj3rJPFj1PHKYp23c7JwiEQGP7PxU"
+#define DATABASE_URL "https://aeroponics-iot-qcu-default-rtdb.asia-southeast1.firebasedatabase.app" //<databaseName>.firebaseio.com or <databaseName>.<region>.firebasedatabase.app
